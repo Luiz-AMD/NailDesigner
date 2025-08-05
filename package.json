@@ -1,0 +1,19 @@
+{
+  "name": "site-designer-unhas",
+  "version": "1.0.0",
+  "description": "Um site para um designer de unhas, apresentando serviços, galeria e informações de contato.",
+  "scripts": {
+    "start": "live-server src"
+  },
+  "keywords": [
+    "design",
+    "unhas",
+    "nailart",
+    "portfolio"
+  ],
+  "author": "Luiz Antônio",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}

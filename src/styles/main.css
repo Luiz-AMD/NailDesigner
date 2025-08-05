@@ -1,0 +1,533 @@
+/* ===================== VARIÁVEIS E RESET ===================== */
+:root {
+    --primary-color: #c36e99;
+    --secondary-color: #E3BC9A;
+    --text-color: #333;
+    --background-color: #f9f9f9;
+    --header-height: 6rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===================== UTILITÁRIOS ===================== */
+.hide {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.maxWidth {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===================== BODY ===================== */
+body {
+    font-family: "Playfair Display", sans-serif;
+    background-color: var(--background-color);
+    max-width: 100%;
+}
+
+/* ===================== HEADER ===================== */
+.header {
+    background-image: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+    color: white;
+    text-align: center;
+}
+
+/* ===================== HEADER LOGO ===================== */
+
+.nav-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+    height: var(--header-height);
+}
+
+.logo-header-nome {
+    font-family: 'Playfair Display', 'Lato', cursive, sans-serif;
+    font-size: 2.8rem;
+    text-decoration: none;
+    background: none;
+    color: white;
+    text-shadow: 0 4px 12px rgba(227, 188, 154, 0.5);
+    transition: color 0.3s, text-shadow 0.3s, transform 0.3s;
+
+}
+
+.logo-header_img {
+
+    display: none;
+}
+
+/* ===================== HEADER MENU ===================== */
+.header-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--header-height);
+    max-height: 0;
+    overflow: hidden;
+    background-image: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+    text-align: end;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.header-menu-input:checked~.header-menu {
+    max-height: 100vh;
+}
+
+.header-menu-icon {
+    cursor: pointer;
+    padding: 1rem;
+}
+
+.header-nav-icon {
+    position: relative;
+    height: .1rem;
+    width: 1.5rem;
+    display: inline-block;
+    background-color: var(--background-color);
+    cursor: pointer;
+}
+
+.header-nav-icon::before,
+.header-nav-icon::after {
+    content: '';
+    position: absolute;
+    height: .1rem;
+    width: 1.5rem;
+    background-color: var(--background-color);
+}
+
+.header-nav-icon::before {
+    top: -0.5rem;
+    left: 0;
+}
+
+.header-nav-icon::after {
+    top: 0.5rem;
+    left: 0;
+}
+
+.header-menu-input:checked~.header-menu-icon .header-nav-icon {
+    background-color: transparent;
+}
+
+.header-menu-input:checked~.header-menu-icon .header-nav-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+}
+
+.header-menu-input:checked~.header-menu-icon .header-nav-icon::after {
+    transform: rotate(-45deg);
+    top: 0;
+}
+
+.header_li a {
+    display: block;
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 1.5rem 2rem 1.5rem 1.5rem;
+    transition: color 0.3s, background-color 0.3s, border-bottom 0.3s;
+    border: 2px solid transparent;
+}
+
+.header_li a:hover {
+    color: var(--primary-color);
+    background-image: linear-gradient(to left, #E3BC9A, #c36e99);
+    border-bottom: #fafafa 2px solid;
+}
+
+/* ===================== MAIN WELCOME ===================== */
+.main-welcome {
+    align-items: center;
+    display: grid;
+    text-align: center;
+    gap: 4rem;
+    padding: 2rem;
+}
+
+.span-title-main {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.main-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: 3rem;
+}
+
+.main-text {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.main-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+/* ===================== MAIN SERVICES ===================== */
+.main-services-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.main-services-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.service-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.service-item-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.service-item-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ===================== MAIN GALLERY ===================== */
+.main-gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    color: var(--primary-color);
+}
+
+
+
+.main-gallery-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.main-gallery-text {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* ===================== CONTATOS ===================== */
+.main-contato {
+    text-align: center;
+}
+
+.contato-link {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+
+}
+
+.contato-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.titulo-contato {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.titulo-contato::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 2px;
+    margin: 0.5rem auto 0 auto;
+}
+
+.contato-whatsapp {}
+
+/* ===================== ESTILOS ADICIONAIS ===================== */
+
+/* ====== AGENDAMENTO ====== */
+.main-agendamento {
+    background: #fff;
+    padding: 2.5rem 1rem;
+    margin: 2rem auto;
+    max-width: 500px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.titulo-agendamento {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.form-agendamento {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.form-agendamento label {
+    font-weight: 600;
+    color: var(--primary-color);
+    text-align: left;
+    margin-bottom: 0.2rem;
+}
+
+.form-agendamento input,
+.form-agendamento select {
+    padding: 0.7rem;
+    border: 1.5px solid var(--secondary-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+    background: #fafafa;
+}
+
+.form-agendamento input:focus,
+.form-agendamento select:focus {
+    border: 1.5px solid var(--primary-color);
+    background: #fff;
+}
+
+.form-agendamento button {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.9rem 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.form-agendamento button:hover {
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    transform: scale(1.04);
+}
+
+/* ====== CALENDÁRIO ====== */
+.calendario-agendamentos {
+    background: #fafafa;
+    border-radius: 10px;
+    margin: 2rem auto 0 auto;
+    max-width: 800px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.calendario-agendamentos h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* ===================== CALENDÁRIO ===================== */
+.calendario-container {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.btn-mes {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+}
+
+.btn-mes:hover {
+    background: var(--secondary-color);
+}
+
+#mes-atual {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.calendario-dias {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 0.5rem;
+}
+
+.dia-semana {
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-color);
+    padding: 0.5rem;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.dias-calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.dia-calendario {
+    aspect-ratio: 1;
+    border: 1px solid #ddd;
+    padding: 0.25rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: relative;
+    background: white;
+    font-size: 0.9rem;
+}
+
+.dia-calendario:hover {
+    background: #f0f0f0;
+}
+
+.dia-calendario.outro-mes {
+    color: #ccc;
+    background: #f9f9f9;
+}
+
+.dia-calendario.hoje {
+    background: var(--secondary-color);
+    color: white;
+    font-weight: bold;
+}
+
+.dia-calendario.com-agendamento {
+    background: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
+
+.dia-calendario.com-agendamento::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+}
+
+.dia-calendario.selecionado {
+    outline: 2px solid var(--primary-color);
+    box-shadow: 0 0 0 2px var(--secondary-color);
+    z-index: 1;
+}
+
+.agendamentos-lista {
+    margin-top: 1rem;
+}
+
+.agendamentos-lista h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.calendario-agendamentos ul {
+    list-style: none;
+    padding: 0;
+}
+
+.calendario-agendamentos li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+}
+
+/* ===================== FOOTER ===================== */
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #ff6f61;
+    color: white;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}

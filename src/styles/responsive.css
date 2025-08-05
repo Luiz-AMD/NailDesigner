@@ -1,0 +1,141 @@
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    /* ===================== LOGO ===================== */
+    .logo-header-nome {
+        display: none;
+    }
+
+    .logo-header_img {
+        display: block;
+        width: 4rem;
+        max-width: 10rem;
+        height: auto;
+        border-radius: 50%;
+    }
+
+    /* ===================== MENU ===================== */
+    .nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        gap: 1rem;
+    }
+
+
+
+    .header-nav-icon {
+        display: none;
+    }
+
+    .header-menu {
+        position: static;
+        background-image: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+        overflow: visible;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        list-style-type: none;
+        height: 100%;
+
+    }
+
+    .header-menu-input {
+        display: block;
+    }
+
+    /* ===================== MAIN WELCOME ===================== */
+    .main-welcome {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .main-title,
+    .span-title-main {
+        font-size: 3rem;
+    }
+
+    .main-text {
+        font-size: 1rem;
+    }
+
+
+    .services-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .service-itemAlinhado {
+        grid-column: span 2;
+
+    }
+
+    .service-itemAlinhado .service-item-img {
+        width: 25rem;
+
+    }
+
+    /* ===================== CALENDÁRIO ===================== */
+    .calendario-container {
+        padding: 0.5rem;
+    }
+
+    .dia-calendario {
+        font-size: 0.8rem;
+        padding: 0.2rem;
+    }
+
+    .btn-mes {
+        padding: 0.4rem 0.8rem;
+        font-size: 1rem;
+    }
+
+    #mes-atual {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 767px) {
+
+    /* ===================== CALENDÁRIO MOBILE ===================== */
+    .calendario-agendamentos {
+        max-width: 100%;
+        padding: 0.5rem;
+    }
+
+    .calendario-container {
+        padding: 0.5rem;
+    }
+
+    .calendario-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .btn-mes {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    #mes-atual {
+        font-size: 1.2rem;
+    }
+
+    .dia-semana {
+        padding: 0.3rem;
+        font-size: 0.8rem;
+    }
+
+    .dia-calendario {
+        font-size: 0.7rem;
+        padding: 0.1rem;
+    }
+
+    .calendario-dias,
+    .dias-calendario {
+        gap: 1px;
+    }
+}
