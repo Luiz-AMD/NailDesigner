@@ -1,4 +1,4 @@
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 768px) {
 
     /* ===================== LOGO ===================== */
     .logo-header-nome {
@@ -78,7 +78,26 @@
 
     }
 
+    /* ===================== AGENDAMENTO ===================== */
+.main-agendamento{
+    width: auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .agdContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        max-width: 100%;
+        gap: 1rem;
+    }
+
     /* ===================== CALENDÁRIO ===================== */
+
     .calendario-container {
         padding: 0.5rem;
     }
@@ -96,6 +115,8 @@
     #mes-atual {
         font-size: 1.3rem;
     }
+        /* ===================== CONTATO ===================== */
+
 }
 
 @media (max-width: 767px) {

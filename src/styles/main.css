@@ -267,7 +267,6 @@ body {
     color: var(--primary-color);
     font-size: 1.2rem;
     padding: 0.5rem 1rem;
-    border: 2px solid var(--primary-color);
     border-radius: 5px;
     transition: background-color 0.3s, color 0.3s;
 
@@ -300,7 +299,10 @@ body {
     margin: 0.5rem auto 0 auto;
 }
 
-.contato-whatsapp {}
+.contato-redes {
+    display: flex;
+    justify-content: center;
+}
 
 /* ===================== ESTILOS ADICIONAIS ===================== */
 
@@ -309,7 +311,7 @@ body {
     background: #fff;
     padding: 2.5rem 1rem;
     margin: 2rem auto;
-    max-width: 500px;
+    max-width:600px;
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     text-align: center;
