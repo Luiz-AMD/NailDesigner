@@ -256,53 +256,7 @@ body {
     margin-bottom: 1rem;
 }
 
-/* ===================== CONTATOS ===================== */
-.main-contato {
-    text-align: center;
-}
 
-.contato-link {
-    display: inline-block;
-    text-decoration: none;
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-
-}
-
-.contato-link:hover {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.titulo-contato {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    color: var(--primary-color);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    margin-top: 2rem;
-    position: relative;
-    display: inline-block;
-}
-
-.titulo-contato::after {
-    content: '';
-    display: block;
-    width: 60%;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    border-radius: 2px;
-    margin: 0.5rem auto 0 auto;
-}
-
-.contato-redes {
-    display: flex;
-    justify-content: center;
-}
 
 /* ===================== ESTILOS ADICIONAIS ===================== */
 
@@ -311,7 +265,7 @@ body {
     background: #fff;
     padding: 2.5rem 1rem;
     margin: 2rem auto;
-    max-width:600px;
+    max-width: 600px;
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     text-align: center;
@@ -524,12 +478,170 @@ body {
 
 /* ===================== FOOTER ===================== */
 
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #ff6f61;
+.main-footer {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
     color: white;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+    margin-top: 3rem;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.footer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-logo-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.footer-logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.footer-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.footer-details p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: white;
+}
+
+.footer-details i {
+    width: 16px;
+    color: white;
+    opacity: 0.9;
+}
+
+.footer-contact h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.contact-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.contact-link.whatsapp:hover {
+    border-color: #25D366;
+    color: #25D366;
+}
+
+.contact-link.instagram:hover {
+    border-color: #E4405F;
+    color: #E4405F;
+}
+
+.contact-link i {
+    font-size: 1.2rem;
+}
+
+.footer-bottom {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: white;
+}
+
+/* Responsividade do Footer */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+    }
+
+    .footer-logo {
+        justify-content: center;
+    }
+
+    .footer-details p {
+        justify-content: center;
+    }
+
+    .contact-links {
+        align-items: center;
+    }
+
+    .contact-link {
+        width: 200px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-content {
+        padding: 1.5rem 0;
+    }
+
+    .footer-logo-text {
+        font-size: 1.3rem;
+    }
+
+    .footer-details p {
+        font-size: 0.9rem;
+    }
+
+    .contact-link {
+        width: 180px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
 }

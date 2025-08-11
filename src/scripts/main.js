@@ -366,7 +366,7 @@ function gerarCalendario(mes, ano) {
 
 // Sistema de horários disponíveis por dia
 const HORARIOS_DISPONIVEIS = [
-    '08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00'
+    '07:30', '10:00', '13:30', '15:00', '17:30'
 ];
 
 // Função para obter horários disponíveis de um dia específico

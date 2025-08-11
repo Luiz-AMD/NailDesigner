@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livía Nail Art - Login Administrativo</title>
+    <meta name="description" content="Acesso ao painel administrativo">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Playwrite+AU+QLD:wght@100..400&family=Special+Gothic+Expanded+One&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="styles/login.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="img/Ana Livia.png" alt="Logo Ana Livia" class="login-logo">
+                <h1>Livía Nail Art</h1>
+                <p>Painel Administrativo</p>
+                <div class="login-info">
+                    <p><strong>Credenciais padrão:</strong></p>
+                    <p>Usuário: <code>analivia</code></p>
+                    <p>Senha: <code>15022008</code></p>
+                </div>
+            </div>
+
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn-login">Entrar</button>
+                </div>
+
+                <div id="login-error" class="login-error" style="display: none;">
+                    <p>Usuário ou senha incorretos. Tente novamente.</p>
+                </div>
+            </form>
+
+            <div class="login-footer">
+                <a href="index.html" class="link-voltar">← Voltar ao Site</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/login.js"></script>
+</body>
+
+</html>
