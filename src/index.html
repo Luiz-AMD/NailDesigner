@@ -43,6 +43,7 @@
         </nav>
     </header>
     <main class="main-content">
+        <!-- home-------------------------------------------- -->
         <section id="home" class="main-welcome maxWidth">
             <div class="main-content-text">
                 <h1 class="main-title">Seja muito<span class="span-title-main">bem-vinda!</span></h1>
@@ -96,16 +97,7 @@
             </div>
         </div>
         </section>
-
-        <section id="galeria" class="main-gallery" aria-label="Galeria de Trabalhos">
-            <h2 class="main-gallery-title">Galeria de Trabalhos</h2>
-            <p class="main-gallery-text">Confira alguns dos nossos trabalhos mais recentes.</p>
-            <!-- LightWidget WIDGET -->
-            <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
-            <iframe src="https://lightwidget.com/widgets/2af3a2623e205f1288d76adc314d61ab.html" scrolling="no"
-                allowtransparency="true" class="lightwidget-widget" style="width:100%;border:0;overflow:hidden;">
-            </iframe>
-        </section>
+        <!-- agendamento-------------------------------------------- -->
 
         <section id="agendamento" class="main-agendamento">
             <h2 class="titulo-agendamento">Agendamento Online</h2>
@@ -128,6 +120,14 @@
                     <select id="hora-agendamento" name="hora" required>
                         <option value="">Selecione uma data primeiro</option>
                     </select>
+                    <div id="horarios-disponiveis-container"
+                        style="display: none; margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
+                        <h4 style="margin: 0 0 10px 0; color: #E3BC9A;">Horários Disponíveis</h4>
+                        <div id="horarios-disponiveis-lista" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                        <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;">
+                            <strong>Total:</strong> <span id="total-horarios">0</span> horários disponíveis
+                        </p>
+                    </div>
 
                     <label for="servico-agendamento">Serviço:</label>
                     <select id="servico-agendamento" name="servico" required>
@@ -160,23 +160,13 @@
                         </div>
                         <div id="dias-calendario" class="dias-calendario"></div>
                     </div>
-                    <div id="horarios-disponiveis-container"
-                        style="display: none; margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
-                        <h4 style="margin: 0 0 10px 0; color: #E3BC9A;">Horários Disponíveis</h4>
-                        <div id="horarios-disponiveis-lista" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
-                        <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;">
-                            <strong>Total:</strong> <span id="total-horarios">0</span> horários disponíveis
-                        </p>
-                    </div>
+
                 </div>
 
             </div>
             <div class="agendamentos-lista">
-                <h4>Agendamentos Salvos</h4>
-                <button type="button" onclick="limparSelecaoCalendario()"
-                    style="margin-bottom: 10px; padding: 8px 15px; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    Ver Todos os Agendamentos
-                </button>
+                <h4 id="titulo-agendamentos"></h4>
+
                 <ul id="lista-agendamentos"></ul>
             </div>
 
@@ -184,7 +174,7 @@
 
 
     </main>
-
+    <!-- footer-------------------------------------------- -->
     <footer class="main-footer">
         <div class="footer-content maxWidth">
             <div class="footer-info">
@@ -213,7 +203,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 Livía Nail Art. Todos os direitos reservados.</p>
+            <p>&copy; 2025 Livía Nail Art. Todos os direitos reservados.</p>
         </div>
     </footer>
 
