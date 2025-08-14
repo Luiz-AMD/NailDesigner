@@ -1,7 +1,4 @@
-// function trocaImg() {
-//     const img = document.querySelector('.main-img');
-//     img.src = '../src/img/Ana Livia.png';
-// }
+
 
 // Função para enviar agendamento via WhatsApp
 function enviarWhatsApp(agendamento) {
@@ -40,85 +37,258 @@ function salvarAgendamentoLocal(agendamento) {
     }
 }
 
-// Função para limpar todos os agendamentos (útil para debug)
-function limparAgendamentos() {
+// Função para salvar lembrete de agendamento
+function salvarLembreteAgendamento(agendamento) {
     try {
-        localStorage.removeItem('agendamentos');
-        console.log('Agendamentos limpos com sucesso');
-        mostrarAgendamentos();
-        gerarCalendario(mesAtual, anoAtual);
+        let lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+
+        // Criar objeto do lembrete
+        const lembrete = {
+            id: Date.now() + Math.random(), // ID único
+            nome: agendamento.nome,
+            telefone: agendamento.telefone,
+            data: agendamento.data,
+            hora: agendamento.hora,
+            servico: agendamento.servico,
+            dataCriacao: new Date().toISOString(),
+            dataFormatada: formatarData(agendamento.data),
+            status: 'pendente', // pendente, enviado, cancelado
+            tipo: 'whatsapp'
+        };
+
+        lembretes.push(lembrete);
+        localStorage.setItem('lembretes_agendamentos', JSON.stringify(lembretes));
+
+        console.log('Lembrete salvo com sucesso:', lembrete);
         return true;
     } catch (error) {
-        console.error('Erro ao limpar agendamentos:', error);
+        console.error('Erro ao salvar lembrete:', error);
         return false;
     }
 }
 
-// Função para limpar seleção do calendário e mostrar todos os agendamentos
-function limparSelecaoCalendario() {
-    // Remover destaque do dia selecionado
-    const todosDias = document.querySelectorAll('.dia-calendario');
-    todosDias.forEach(d => d.classList.remove('selecionado'));
+// Função para verificar lembretes pendentes
+function verificarLembretesPendentes() {
+    try {
+        const lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+        const hoje = new Date();
+        const hojeFormatada = hoje.toISOString().split('T')[0]; // YYYY-MM-DD
 
-    // Limpar input de data
-    const dataInput = document.getElementById('data-agendamento');
-    if (dataInput) {
-        dataInput.value = '';
-    }
+        const lembretesPendentes = lembretes.filter(lembrete => {
+            // Verificar se é para hoje ou amanhã e ainda não foi enviado
+            const dataLembrete = new Date(lembrete.data);
+            const amanha = new Date(hoje);
+            amanha.setDate(amanha.getDate() + 1);
 
-    // Limpar texto da data selecionada
-    const dataSelecionadaTexto = document.getElementById('data-selecionada-texto');
-    if (dataSelecionadaTexto) {
-        dataSelecionadaTexto.textContent = 'Nenhuma data selecionada';
-    }
-
-    // Limpar seleção do select de horários
-    const horaInput = document.getElementById('hora-agendamento');
-    if (horaInput) {
-        horaInput.innerHTML = '<option value="">Selecione uma data primeiro</option>';
-    }
-
-    // Esconder container de horários disponíveis
-    const container = document.getElementById('horarios-disponiveis-container');
-    if (container) {
-        container.style.display = 'none';
-    }
-
-    // Mostrar todos os agendamentos
-    mostrarAgendamentos();
-}
-
-// Função para mostrar todos os agendamentos no console (debug)
-function debugAgendamentos() {
-    const agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
-    console.log('Agendamentos salvos:', agendamentos);
-    console.log('Total de agendamentos:', agendamentos.length);
-
-    // Mostrar agendamentos formatados
-    if (agendamentos.length > 0) {
-        console.log('Agendamentos formatados:');
-        agendamentos.forEach((a, i) => {
-            const dataFormatada = formatarData(a.data);
-            console.log(`${i + 1}. ${dataFormatada} às ${a.hora} - ${a.nome} (${a.servico})`);
+            return (lembrete.data === hojeFormatada || lembrete.data === amanha.toISOString().split('T')[0])
+                && lembrete.status === 'pendente';
         });
-    }
 
-    return agendamentos;
+        return lembretesPendentes;
+    } catch (error) {
+        console.error('Erro ao verificar lembretes:', error);
+        return [];
+    }
 }
 
-// Função para testar formatação de data
-function testarData() {
-    const dataInput = document.getElementById('data-agendamento');
-    if (dataInput && dataInput.value) {
-        const dataOriginal = dataInput.value;
-        const dataFormatada = formatarData(dataOriginal);
-        console.log('Teste de formatação de data:');
-        console.log('Data original (input):', dataOriginal);
-        console.log('Data formatada:', dataFormatada);
-        console.log('Data como objeto Date:', new Date(dataOriginal + 'T00:00:00'));
-        alert(`Data original: ${dataOriginal}\nData formatada: ${dataFormatada}`);
-    } else {
-        alert('Por favor, selecione uma data primeiro no formulário.');
+// Função para enviar lembrete via WhatsApp
+function enviarLembreteWhatsApp(lembrete) {
+    const nome = lembrete.nome;
+    const telefone = lembrete.telefone;
+    const data = lembrete.dataFormatada;
+    const hora = lembrete.hora;
+    const servico = lembrete.servico;
+
+    // Função para obter o número da cliente do lembrete
+    function getNumeroCliente(lembrete) {
+        if (!lembrete.telefone) return '';
+
+        // Remove todos os caracteres não numéricos
+        let numero = lembrete.telefone.replace(/\D/g, '');
+
+        // Se o número tem 11 dígitos e começa com 0, remove o 0
+        if (numero.length === 11 && numero.startsWith('0')) {
+            numero = numero.substring(1);
+        }
+
+        // Se o número tem 10 dígitos, adiciona o código do país (55 para Brasil)
+        if (numero.length === 10) {
+            numero = '55' + numero;
+        }
+
+        // Se o número tem 11 dígitos e não começa com 55, adiciona o código do país
+        if (numero.length === 11 && !numero.startsWith('55')) {
+            numero = '55' + numero;
+        }
+
+        return numero;
+    }
+
+    const numeroCliente = getNumeroCliente(lembrete);
+
+    // Verificar se o número é válido (deve ter pelo menos 12 dígitos com código do país)
+    if (!numeroCliente || numeroCliente.length < 12) {
+        console.error('Número de telefone inválido:', telefone, 'Número processado:', numeroCliente);
+        alert(`Número de telefone inválido para envio do lembrete: ${telefone}`);
+        return null;
+    }
+
+    const mensagem = `Olá ${nome}! 😊%0A%0A` +
+        `*LEMBRETE DE AGENDAMENTO* 📅%0A%0A` +
+        `Você tem um horário marcado:%0A` +
+        `📅 *Data:* ${data}%0A` +
+        `⏰ *Horário:* ${hora}%0A` +
+        `💅 *Serviço:* ${servico}%0A%0A` +
+        `Por favor, confirme se poderá comparecer.%0A` +
+        `Em caso de cancelamento, entre em contato com antecedência.%0A%0A` +
+        `Aguardo você! 💕%0A` +
+        `Ana Livia - Livía Nail Art`;
+
+    const url = `https://wa.me/${numeroCliente}?text=${mensagem}`;
+
+    // Não marcar como enviado automaticamente - permite reenvios
+    // marcarLembreteComoEnviado(lembrete.id);
+
+    return url;
+}
+
+// Função para marcar lembrete como enviado
+function marcarLembreteComoEnviado(lembreteId) {
+    try {
+        let lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+
+        const lembreteIndex = lembretes.findIndex(l => l.id === lembreteId);
+        if (lembreteIndex !== -1) {
+            lembretes[lembreteIndex].status = 'enviado';
+            lembretes[lembreteIndex].dataEnvio = new Date().toISOString();
+            localStorage.setItem('lembretes_agendamentos', JSON.stringify(lembretes));
+            console.log(`Lembrete ${lembreteId} marcado como enviado`);
+        }
+    } catch (error) {
+        console.error('Erro ao marcar lembrete como enviado:', error);
+    }
+}
+
+// Função para mostrar painel de lembretes
+function mostrarPainelLembretes() {
+    const lembretesPendentes = verificarLembretesPendentes();
+
+    if (lembretesPendentes.length === 0) {
+        return;
+    }
+
+    // Criar ou atualizar painel de lembretes
+    let painelLembretes = document.getElementById('painel-lembretes');
+    if (!painelLembretes) {
+        painelLembretes = document.createElement('div');
+        painelLembretes.id = 'painel-lembretes';
+        painelLembretes.className = 'painel-lembretes';
+        document.body.appendChild(painelLembretes);
+    }
+
+    painelLembretes.innerHTML = `
+        <div class="lembretes-header">
+            <h3>📅 Lembretes de Agendamentos</h3>
+            <button class="btn-fechar-lembretes" onclick="fecharPainelLembretes()">×</button>
+        </div>
+        <div class="lembretes-content">
+            ${lembretesPendentes.map(lembrete => `
+                <div class="lembrete-item">
+                    <div class="lembrete-info">
+                        <strong>${lembrete.nome}</strong>
+                        <p>📅 ${lembrete.dataFormatada} às ${lembrete.hora}</p>
+                        <p>💅 ${lembrete.servico}</p>
+                        <p>📱 ${lembrete.telefone}</p>
+                    </div>
+                    <div class="lembrete-acoes">
+                        <button class="btn-enviar-lembrete" onclick="enviarLembreteIndividual(${lembrete.id})">
+                            📱 Enviar Lembrete
+                        </button>
+                        <button class="btn-cancelar-lembrete" onclick="cancelarLembrete(${lembrete.id})">
+                            ❌ Cancelar
+                        </button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        <div class="lembretes-footer">
+            <button class="btn-enviar-todos" onclick="enviarTodosLembretes()">
+                📱 Enviar Todos os Lembretes
+            </button>
+        </div>
+    `;
+
+    painelLembretes.style.display = 'block';
+}
+
+// Função para fechar painel de lembretes
+function fecharPainelLembretes() {
+    const painelLembretes = document.getElementById('painel-lembretes');
+    if (painelLembretes) {
+        painelLembretes.style.display = 'none';
+    }
+}
+
+// Função para enviar lembrete individual
+function enviarLembreteIndividual(lembreteId) {
+    try {
+        const lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+        const lembrete = lembretes.find(l => l.id === lembreteId);
+
+        if (lembrete) {
+            const url = enviarLembreteWhatsApp(lembrete);
+            window.open(url, '_blank');
+
+            // Atualizar painel
+            setTimeout(() => {
+                mostrarPainelLembretes();
+            }, 1000);
+        }
+    } catch (error) {
+        console.error('Erro ao enviar lembrete individual:', error);
+    }
+}
+
+// Função para cancelar lembrete
+function cancelarLembrete(lembreteId) {
+    try {
+        let lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+
+        const lembreteIndex = lembretes.findIndex(l => l.id === lembreteId);
+        if (lembreteIndex !== -1) {
+            lembretes[lembreteIndex].status = 'cancelado';
+            lembretes[lembreteIndex].dataCancelamento = new Date().toISOString();
+            localStorage.setItem('lembretes_agendamentos', JSON.stringify(lembretes));
+
+            // Atualizar painel
+            mostrarPainelLembretes();
+        }
+    } catch (error) {
+        console.error('Erro ao cancelar lembrete:', error);
+    }
+}
+
+// Função para enviar todos os lembretes
+function enviarTodosLembretes() {
+    const lembretesPendentes = verificarLembretesPendentes();
+
+    if (lembretesPendentes.length === 0) {
+        alert('Não há lembretes pendentes para enviar.');
+        return;
+    }
+
+    if (confirm(`Deseja enviar ${lembretesPendentes.length} lembrete(s) via WhatsApp?`)) {
+        lembretesPendentes.forEach(lembrete => {
+            const url = enviarLembreteWhatsApp(lembrete);
+            // Abrir em nova aba com delay para evitar bloqueio
+            setTimeout(() => {
+                window.open(url, '_blank');
+            }, 1000);
+        });
+
+        setTimeout(() => {
+            mostrarPainelLembretes();
+        }, 2000);
     }
 }
 
@@ -171,51 +341,45 @@ function mostrarAgendamentos(dataFiltro = null) {
     if (!lista) return;
 
     lista.innerHTML = '';
+
+    // Se não há data filtro, não mostra nada e esconde o título
+    if (!dataFiltro) {
+        const tituloAgenda = document.querySelectorAll('#titulo-agendamentos');
+        tituloAgenda.forEach(t => t.style.display = 'none');
+        return;
+    }
+
     const agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
 
     if (agendamentos.length === 0) {
-        lista.innerHTML = '<li>Nenhum agendamento salvo.</li>';
         return;
     }
 
-    // Filtrar agendamentos por data se especificado
-    let agendamentosFiltrados = agendamentos;
-    if (dataFiltro) {
-        agendamentosFiltrados = agendamentos.filter(a => a.data === dataFiltro);
-    }
+    // Filtrar agendamentos por data
+    const agendamentosFiltrados = agendamentos.filter(a => a.data === dataFiltro);
 
     if (agendamentosFiltrados.length === 0) {
-        if (dataFiltro) {
-            const dataFormatada = formatarData(dataFiltro);
-            lista.innerHTML = `<li>Nenhum agendamento para ${dataFormatada}.</li>`;
-        } else {
-            lista.innerHTML = '<li>Nenhum agendamento salvo.</li>';
-        }
         return;
     }
 
-    // Adicionar título indicando se está filtrando ou mostrando todos
-    if (dataFiltro) {
+    // Mostrar título da seção de agendamentos
+    const tituloAgenda = document.querySelectorAll('#titulo-agendamentos');
+    if (tituloAgenda.length > 0) {
         const dataFormatada = formatarData(dataFiltro);
-        const titulo = document.createElement('li');
-        titulo.style.fontWeight = 'bold';
-        titulo.style.color = '#007bff';
-        titulo.style.marginBottom = '10px';
-        titulo.textContent = `Agendamentos para ${dataFormatada}:`;
-        lista.appendChild(titulo);
+        tituloAgenda.forEach(t => {
+            t.textContent = `Agendamentos para ${dataFormatada}`;
+            t.style.display = 'block';
+        });
     }
 
-    // Ordenar agendamentos por data e hora
+    // Ordenar agendamentos por hora
     agendamentosFiltrados.sort((a, b) => {
-        const dataA = new Date(a.data + 'T' + a.hora);
-        const dataB = new Date(b.data + 'T' + b.hora);
-        return dataA - dataB;
+        return a.hora.localeCompare(b.hora);
     });
 
     agendamentosFiltrados.forEach((a, i) => {
         const li = document.createElement('li');
-        const dataFormatada = formatarData(a.data);
-        li.textContent = `${dataFormatada} às ${a.hora} - ${a.nome} (${a.servico})`;
+        li.textContent = `${a.hora} - ${a.nome} (${a.servico})`;
         lista.appendChild(li);
     });
 }
@@ -322,7 +486,7 @@ function gerarCalendario(mes, ano) {
         // Permitir selecionar apenas dias válidos (não passados, não finais de semana)
         const dataDoDia = new Date(ano, mes, dia);
         const hojeLimpo = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
-        if (dataDoDia >= hojeLimpo && dataDoDia.getDay() !== 0 && dataDoDia.getDay() !== 6) {
+        if (dataDoDia >= hojeLimpo && dataDoDia.getDay() !== 0) {
             diaElement.style.cursor = 'pointer';
             diaElement.addEventListener('click', function () {
                 // Preencher o input de data
@@ -404,11 +568,11 @@ function mostrarHorariosDisponiveis(data) {
             horaInput.appendChild(option);
         });
 
-        // Mostrar quantidade de horários disponíveis
+        // Mostrar data selecionada
         const dataSelecionadaTexto = document.getElementById('data-selecionada-texto');
         if (dataSelecionadaTexto) {
             const dataFormatada = formatarData(data);
-            dataSelecionadaTexto.textContent = `${dataFormatada} (${horariosDisponiveis.length} horários disponíveis)`;
+            dataSelecionadaTexto.textContent = dataFormatada;
         }
     }
 
@@ -428,28 +592,40 @@ function mostrarHorariosDisponiveis(data) {
                 badge.style.cssText = `
                     display: inline-block;
                     padding: 6px 12px;
-                    background: #007bff;
+                    background:#bb6888;
                     color: white;
                     border-radius: 20px;
-                    font-size: 14px;
+                    font-size: 14px;    
                     font-weight: 500;
                     cursor: pointer;
                     transition: background-color 0.2s;
                 `;
 
-                // Adicionar hover effect
-                badge.addEventListener('mouseenter', () => {
-                    badge.style.background = '#0056b3';
-                });
 
-                badge.addEventListener('mouseleave', () => {
-                    badge.style.background = '#007bff';
-                });
 
                 // Selecionar horário ao clicar
                 badge.addEventListener('click', () => {
                     if (horaInput) {
+                        // Remover seleção anterior
+                        const todosBadges = document.querySelectorAll('#horarios-disponiveis-lista span');
+                        todosBadges.forEach(b => {
+                            b.style.background = '#007bff';
+                            b.style.border = 'none';
+                        });
+
+                        // Destacar badge selecionado
+                        badge.style.background = '#28a745';
+                        badge.style.border = '2px solid #1e7e34';
+
                         horaInput.value = horario;
+
+                        // Mostrar horário selecionado
+                        const horarioSelecionado = document.getElementById('horario-selecionado');
+                        if (horarioSelecionado) {
+                            horarioSelecionado.textContent = `Horário selecionado: ${horario}`;
+                            horarioSelecionado.style.display = 'block';
+                        }
+
                         // Disparar evento para validar
                         horaInput.dispatchEvent(new Event('change'));
                     }
@@ -483,6 +659,113 @@ function mostrarHorariosDisponiveis(data) {
     }
 }
 
+// Função para selecionar serviço automaticamente ao clicar na imagem
+function selecionarServicoPorImagem(servicoNome) {
+    const selectServico = document.getElementById('servico-agendamento');
+    if (selectServico) {
+        // Mapeamento de nomes para garantir correspondência
+        const mapeamentoServicos = {
+            'Molde F1': 'Molde F1',
+            'Fibra de vidro': 'Fibra de vidro',
+            'Banho em gel': 'Banho em gel',
+            'Manutenção': 'Manutenção',
+            'esmaltação em gel': 'Esmaltação em gel'
+        };
+
+        // Usar o nome mapeado ou o original
+        const nomeParaBuscar = mapeamentoServicos[servicoNome] || servicoNome;
+
+        // Encontrar a opção correspondente ao serviço
+        const opcoes = selectServico.options;
+        for (let i = 0; i < opcoes.length; i++) {
+            if (opcoes[i].value === nomeParaBuscar) {
+                selectServico.selectedIndex = i;
+
+                // Adicionar classe visual para feedback
+                selectServico.classList.add('selecionado');
+
+                // Mostrar mensagem de confirmação
+                mostrarMensagemServicoSelecionado(servicoNome);
+
+                // Rolar para a seção de agendamento
+                const secaoAgendamento = document.getElementById('agendamento');
+                if (secaoAgendamento) {
+                    secaoAgendamento.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+
+                // Remover classe após 3 segundos
+                setTimeout(() => {
+                    selectServico.classList.remove('selecionado');
+                }, 3000);
+
+                console.log(`Serviço "${servicoNome}" selecionado automaticamente`);
+                break;
+            }
+        }
+    }
+}
+
+// Função para mostrar mensagem de serviço selecionado
+function mostrarMensagemServicoSelecionado(servicoNome) {
+    // Remover mensagem anterior se existir
+    const mensagemAnterior = document.querySelector('.mensagem-servico-selecionado');
+    if (mensagemAnterior) {
+        mensagemAnterior.remove();
+    }
+
+    // Criar nova mensagem
+    const mensagem = document.createElement('div');
+    mensagem.className = 'mensagem-servico-selecionado';
+    mensagem.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        Serviço "${servicoNome}" selecionado!
+    `;
+
+    // Adicionar ao body
+    document.body.appendChild(mensagem);
+
+    // Remover mensagem após 3 segundos
+    setTimeout(() => {
+        if (mensagem.parentNode) {
+            mensagem.remove();
+        }
+    }, 3000);
+}
+
+// Função para inicializar os event listeners das imagens de serviços
+function inicializarSelecaoDeServicos() {
+    const imagensServicos = document.querySelectorAll('.service-item-img');
+
+    console.log(`Encontradas ${imagensServicos.length} imagens de serviços para inicializar`);
+
+    imagensServicos.forEach((img, index) => {
+        img.addEventListener('click', function () {
+            // Encontrar o título do serviço
+            const serviceItem = this.closest('.service-item');
+            const tituloServico = serviceItem.querySelector('.service-item-title');
+
+            if (tituloServico) {
+                const nomeServico = tituloServico.textContent.trim();
+                console.log(`Clique detectado na imagem ${index + 1}: "${nomeServico}"`);
+                selecionarServicoPorImagem(nomeServico);
+            }
+        });
+
+        // Adicionar cursor pointer para indicar que é clicável
+        img.style.cursor = 'pointer';
+
+        // Adicionar título para acessibilidade
+        const serviceItem = img.closest('.service-item');
+        const tituloServico = serviceItem.querySelector('.service-item-title');
+        if (tituloServico) {
+            img.title = `Clique para selecionar: ${tituloServico.textContent.trim()}`;
+        }
+    });
+}
+
 // Adiciona o evento ao formulário de agendamento, se existir na página
 document.addEventListener('DOMContentLoaded', function () {
     const formAgendamento = document.getElementById('form-agendamento');
@@ -494,7 +777,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Adiciona o novo event listener
         formAgendamento.addEventListener('submit', handleFormSubmit);
 
-        // Carrega agendamentos existentes (todos)
+        // Inicializa lista de agendamentos (vazia até selecionar data)
         mostrarAgendamentos();
     }
 
@@ -550,8 +833,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Validação de horário
-        if (hora < "08:00" || hora > "17:00" || (hora >= "12:00" && hora < "13:00")) {
-            alert('Selecione um horário entre 08:00 e 12:00 ou entre 13:00 e 17:00 (horário de almoço bloqueado).');
+        if (hora < "07:30" || hora > "18:00" || (hora >= "12:00" && hora < "13:30")) {
+            alert('Selecione um horário entre 07:30 e 12:00 ou entre 13:30 e 18:00 (horário de almoço bloqueado).');
             return;
         }
 
@@ -583,8 +866,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const salvou = salvarAgendamentoLocal(agendamento);
 
         if (salvou) {
+            // Criar lembrete automaticamente
+            salvarLembreteAgendamento(agendamento);
+
             // Atualizar interface
-            mostrarAgendamentos(); // Mostrar todos os agendamentos após salvar
+            mostrarAgendamentos(data); // Mostrar agendamentos da data atual após salvar
             gerarCalendario(mesAtual, anoAtual);
 
             // Limpar formulário
@@ -638,10 +924,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return JSON.parse(localStorage.getItem('agendamentos')) || [];
     }
 
-    // Bloqueia horários fora do intervalo 08:00 às 17:00, horário de almoço 12:00 às 13:00 e horários já agendados
+    // Bloqueia horários fora do intervalo 07:30 às 18:00, horário de almoço 12:00 às 13:30 e horários já agendados
     if (horaInput) {
-        horaInput.min = "08:00";
-        horaInput.max = "17:00";
+        horaInput.min = "07:30";
+        horaInput.max = "18:00";
         horaInput.addEventListener('input', function () {
             const hora = this.value;
             const data = dataInput.value;
@@ -653,8 +939,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            if (hora < "08:00" || hora > "17:00" || (hora >= "12:00" && hora < "13:00")) {
-                alert('Selecione um horário entre 08:00 e 12:00 ou entre 13:00 e 17:00 (horário de almoço bloqueado).');
+            if (hora < "07:30" || hora > "18:00" || (hora >= "12:00" && hora < "13:30")) {
+                alert('Selecione um horário entre 07:30 e 12:00 ou entre 13:30 e 18:00 (horário de almoço bloqueado).');
                 this.value = '';
                 return;
             }
@@ -697,5 +983,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ...restante do seu código
+    // Inicializar seleção de serviços por imagem
+    inicializarSelecaoDeServicos();
 });
+

@@ -68,8 +68,12 @@
         justify-content: center;
     }
 
+    .service-item {
+        grid-column: span 1;
+    }
+
     .service-itemAlinhado {
-        grid-column: span 2;
+        grid-column: span 1;
 
     }
 
@@ -79,13 +83,13 @@
     }
 
     /* ===================== AGENDAMENTO ===================== */
-.main-agendamento{
-    width: auto;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    .main-agendamento {
+        width: auto;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
     .agdContainer {
         display: flex;
@@ -115,8 +119,103 @@
     #mes-atual {
         font-size: 1.3rem;
     }
-        /* ===================== CONTATO ===================== */
 
+    /* ===================== CONTATO ===================== */
+
+}
+
+/* ===================== ESTILOS PARA INTERAÇÃO COM SERVIÇOS ===================== */
+.service-item-img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.service-item-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.service-item {
+    transition: transform 0.3s ease;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Animação para mensagem de serviço selecionado */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.mensagem-servico-selecionado {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    font-weight: 500;
+    font-size: 14px;
+    animation: slideIn 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 300px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mensagem-servico-selecionado i {
+    font-size: 18px;
+    color: #fff;
+}
+
+/* Feedback visual para o select de serviço quando selecionado */
+#servico-agendamento.selecionado {
+    border: 2px solid #28a745 !important;
+    background-color: #f8fff9 !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+/* Estilos responsivos para as interações */
+@media (max-width: 767px) {
+    .service-item-img:hover {
+        transform: scale(1.02);
+    }
+
+    .mensagem-servico-selecionado {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        font-size: 13px;
+        padding: 12px 16px;
+        max-width: none;
+    }
 }
 
 @media (max-width: 767px) {
@@ -158,5 +257,580 @@
     .calendario-dias,
     .dias-calendario {
         gap: 1px;
+    }
+}
+
+@media (min-width: 1200px) {
+    /* ===================== DESKTOP STYLES ===================== */
+
+    /* ===================== HEADER ===================== */
+    .nav-header {
+        padding: 0 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .logo-header_img {
+        width: 5rem;
+        max-width: 12rem;
+    }
+
+    .header-menu {
+        gap: 2rem;
+        font-size: 1.1rem;
+    }
+
+    /* ===================== MAIN WELCOME ===================== */
+    .main-welcome {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+        gap: 3rem;
+    }
+
+    .main-title,
+    .span-title-main {
+        font-size: 4rem;
+        line-height: 1.2;
+    }
+
+    .main-text {
+        font-size: 1.2rem;
+        line-height: 1.6;
+    }
+
+    /* ===================== SERVICES ===================== */
+    .services-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+
+
+
+    .service-itemAlinhado .service-item-img {
+        width: 17.5rem;
+        max-width: 100%;
+
+    }
+
+    .service-item {
+        padding: 2rem;
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ===================== AGENDAMENTO ===================== */
+    .main-agendamento {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .agdContainer {
+        gap: 2rem;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    /* ===================== CALENDÁRIO ===================== */
+    .calendario-container {
+        padding: 1rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .calendario-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-mes {
+        padding: 0.6rem 1.2rem;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-mes:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    #mes-atual {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .dia-semana {
+        padding: 0.8rem;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .dia-calendario {
+        font-size: 1rem;
+        padding: 0.8rem;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .dia-calendario:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .dia-calendario.selected {
+        background-color: var(--secondary-color);
+        color: white;
+        font-weight: bold;
+    }
+
+    /* ===================== CONTATO ===================== */
+    .contact-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+    }
+
+    .contact-info,
+    .contact-form {
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ===================== GALLERY ===================== */
+    .gallery-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    .gallery-item {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover {
+        transform: scale(1.05);
+    }
+
+    /* ===================== FOOTER ===================== */
+    .footer {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+}
+
+/* ===================== ESTILOS PARA ACESSIBILIDADE ===================== */
+.data-selecionada-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.data-selecionada-container label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.data-selecionada-container span {
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-weight: 500;
+    color: #495057;
+    min-height: 2.5rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Melhorar acessibilidade dos campos de formulário */
+.form-agendamento label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.form-agendamento input,
+.form-agendamento select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-agendamento input:focus,
+.form-agendamento select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(227, 188, 154, 0.1);
+}
+
+/* Estilos para textos de ajuda */
+.form-help {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.form-agendamento input::placeholder,
+.form-agendamento select::placeholder {
+    color: #adb5bd;
+    font-style: italic;
+}
+
+/* Estilos responsivos para acessibilidade */
+@media (max-width: 767px) {
+    .data-selecionada-container {
+        gap: 0.3rem;
+    }
+
+    .data-selecionada-container span {
+        padding: 0.4rem;
+        font-size: 0.9rem;
+    }
+
+    .form-agendamento input,
+    .form-agendamento select {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* ===================== ESTILOS PARA LEMBRETES ===================== */
+
+/* Painel de lembretes */
+.painel-lembretes {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow: hidden;
+    display: none;
+    border: 2px solid var(--primary-color);
+}
+
+.lembretes-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lembretes-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.btn-fechar-lembretes {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.btn-fechar-lembretes:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.lembretes-content {
+    padding: 1rem;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.lembrete-item {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lembrete-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.lembrete-info {
+    margin-bottom: 1rem;
+}
+
+.lembrete-info strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.lembrete-info p {
+    margin: 0.3rem 0;
+    color: #495057;
+}
+
+.lembrete-acoes {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-enviar-lembrete,
+.btn-cancelar-lembrete {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 120px;
+}
+
+.btn-enviar-lembrete {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+
+.btn-enviar-lembrete:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+}
+
+.btn-cancelar-lembrete {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+}
+
+.btn-cancelar-lembrete:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+}
+
+.lembretes-footer {
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+.btn-enviar-todos {
+    width: 100%;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-enviar-todos:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(227, 188, 154, 0.4);
+}
+
+/* Seção de lembretes no formulário */
+.lembretes-section {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.lembretes-section h4 {
+    color: var(--primary-color);
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.lembretes-section p {
+    color: #6c757d;
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+}
+
+.btn-ver-lembretes {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(227, 188, 154, 0.3);
+}
+
+.btn-ver-lembretes:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(227, 188, 154, 0.4);
+}
+
+/* Notificação de lembretes */
+.notificacao-lembretes {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #ffc107, #ffca2c);
+    color: #212529;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    z-index: 10001;
+    max-width: 350px;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.notificacao-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notificacao-content span {
+    flex: 1;
+    font-weight: 500;
+}
+
+.notificacao-content button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.notificacao-content button:last-child {
+    background: #dc3545;
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+}
+
+.notificacao-content button:hover {
+    opacity: 0.8;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Estilos responsivos para lembretes */
+@media (max-width: 767px) {
+    .painel-lembretes {
+        max-width: 95vw;
+        max-height: 90vh;
+        margin: 1rem;
+    }
+
+    .lembretes-header {
+        padding: 0.8rem 1rem;
+    }
+
+    .lembretes-header h3 {
+        font-size: 1rem;
+    }
+
+    .lembretes-content {
+        padding: 0.8rem;
+        max-height: 40vh;
+    }
+
+    .lembrete-item {
+        padding: 0.8rem;
+    }
+
+    .lembrete-acoes {
+        flex-direction: column;
+    }
+
+    .btn-enviar-lembrete,
+    .btn-cancelar-lembrete {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .notificacao-lembretes {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .notificacao-content {
+        flex-direction: column;
+        gap: 0.8rem;
+        text-align: center;
+    }
+
+    .notificacao-content button {
+        width: 100%;
+        padding: 0.5rem;
     }
 }

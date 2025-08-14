@@ -45,6 +45,10 @@ function inicializarAdmin() {
         carregarAgendamentos();
         gerarCalendarioAdmin();
 
+        // Carregar dados de lembretes
+        carregarEstatisticasLembretes();
+        carregarHistoricoLembretes();
+
         // Configurar event listeners
         configurarEventListeners();
 
@@ -855,5 +859,527 @@ function resetarConfiguracoes() {
         alert('Configurações restauradas com sucesso!');
     } catch (error) {
         console.error('Erro ao resetar configurações:', error);
+    }
+}
+
+// ===================== FUNÇÕES DE LEMBRETES =====================
+
+// Função para carregar estatísticas de lembretes
+function carregarEstatisticasLembretes() {
+    try {
+        const lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+
+        const pendentes = lembretes.filter(l => l.status === 'pendente').length;
+        const enviados = lembretes.filter(l => l.status === 'enviado').length;
+        const total = lembretes.length;
+
+        const pendentesElement = getElementSafely('lembretes-pendentes');
+        const enviadosElement = getElementSafely('lembretes-enviados');
+        const totalElement = getElementSafely('total-lembretes');
+
+        if (pendentesElement) pendentesElement.textContent = pendentes;
+        if (enviadosElement) enviadosElement.textContent = enviados;
+        if (totalElement) totalElement.textContent = total;
+
+        console.log(`Estatísticas de lembretes: ${pendentes} pendentes, ${enviados} enviados, ${total} total`);
+    } catch (error) {
+        console.error('Erro ao carregar estatísticas de lembretes:', error);
+    }
+}
+
+// Função para carregar histórico de lembretes
+function carregarHistoricoLembretes() {
+    try {
+        const lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+        const listaElement = getElementSafely('lista-lembretes-admin');
+
+        if (!listaElement) return;
+
+        if (lembretes.length === 0) {
+            listaElement.innerHTML = `
+                <div class="sem-lembretes">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>Nenhum lembrete encontrado</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Ordenar por data de criação (mais recentes primeiro)
+        const lembretesOrdenados = lembretes.sort((a, b) =>
+            new Date(b.dataCriacao) - new Date(a.dataCriacao)
+        );
+
+        const html = lembretesOrdenados.map(lembrete => {
+            const statusClass = lembrete.status === 'pendente' ? 'status-pendente' :
+                lembrete.status === 'enviado' ? 'status-enviado' : 'status-cancelado';
+
+            const statusIcon = lembrete.status === 'pendente' ? '⏳' :
+                lembrete.status === 'enviado' ? '✅' : '❌';
+
+            const dataEnvio = lembrete.dataEnvio ?
+                new Date(lembrete.dataEnvio).toLocaleString('pt-BR') : 'Não enviado';
+
+            return `
+                <div class="lembrete-item-admin ${statusClass}">
+                    <div class="lembrete-info-admin">
+                        <div class="lembrete-header-admin">
+                            <strong>${lembrete.nome}</strong>
+                            <span class="lembrete-status ${statusClass}">
+                                ${statusIcon} ${lembrete.status.toUpperCase()}
+                            </span>
+                        </div>
+                        <div class="lembrete-details-admin">
+                            <p><i class="fas fa-calendar"></i> ${lembrete.dataFormatada} às ${lembrete.hora}</p>
+                            <p><i class="fas fa-paint-brush"></i> ${lembrete.servico}</p>
+                            <p><i class="fas fa-phone"></i> ${lembrete.telefone}</p>
+                            <p><i class="fas fa-clock"></i> Criado em: ${new Date(lembrete.dataCriacao).toLocaleString('pt-BR')}</p>
+                            ${lembrete.dataEnvio ? `<p><i class="fas fa-paper-plane"></i> Enviado em: ${dataEnvio}</p>` : ''}
+                        </div>
+                    </div>
+                    <div class="lembrete-acoes-admin">
+                        <button class="btn-enviar-lembrete-admin" onclick="reenviarLembrete(${lembrete.id})">
+                            📱 ${lembrete.status === 'pendente' ? 'Enviar' : 'Reenviar'}
+                        </button>
+                        ${lembrete.status === 'pendente' ? `
+                            <button class="btn-marcar-enviado-admin" onclick="marcarLembreteComoEnviadoManual(${lembrete.id})">
+                                ✅ Marcar como Enviado
+                            </button>
+                            <button class="btn-cancelar-lembrete-admin" onclick="cancelarLembrete(${lembrete.id})">
+                                ❌ Cancelar
+                            </button>
+                        ` : lembrete.status === 'enviado' ? `
+                            <button class="btn-voltar-pendente-admin" onclick="voltarLembreteParaPendente(${lembrete.id})">
+                                🔄 Voltar para Pendente
+                            </button>
+                        ` : ''}
+                        <button class="btn-excluir-lembrete-admin" onclick="excluirLembrete(${lembrete.id})">
+                            🗑️ Excluir
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        listaElement.innerHTML = html;
+    } catch (error) {
+        console.error('Erro ao carregar histórico de lembretes:', error);
+    }
+}
+
+// Função para limpar lembretes antigos
+function limparLembretesAntigos() {
+    try {
+        const lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+        const hoje = new Date();
+        const trintaDiasAtras = new Date(hoje.getTime() - (30 * 24 * 60 * 60 * 1000));
+
+        const lembretesAntigos = lembretes.filter(lembrete => {
+            const dataLembrete = new Date(lembrete.data);
+            return dataLembrete < trintaDiasAtras;
+        });
+
+        if (lembretesAntigos.length === 0) {
+            alert('Não há lembretes antigos para limpar.');
+            return;
+        }
+
+        if (confirm(`Deseja excluir ${lembretesAntigos.length} lembrete(s) antigo(s) (mais de 30 dias)?`)) {
+            const lembretesAtualizados = lembretes.filter(lembrete => {
+                const dataLembrete = new Date(lembrete.data);
+                return dataLembrete >= trintaDiasAtras;
+            });
+
+            localStorage.setItem('lembretes_agendamentos', JSON.stringify(lembretesAtualizados));
+
+            alert(`${lembretesAntigos.length} lembrete(s) antigo(s) foram removidos.`);
+
+            // Atualizar interface
+            carregarEstatisticasLembretes();
+            carregarHistoricoLembretes();
+        }
+    } catch (error) {
+        console.error('Erro ao limpar lembretes antigos:', error);
+        alert('Erro ao limpar lembretes antigos.');
+    }
+}
+
+// Função para excluir lembrete específico
+function excluirLembrete(lembreteId) {
+    try {
+        if (confirm('Deseja excluir este lembrete?')) {
+            let lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+            lembretes = lembretes.filter(l => l.id !== lembreteId);
+            localStorage.setItem('lembretes_agendamentos', JSON.stringify(lembretes));
+
+            // Atualizar interface
+            carregarEstatisticasLembretes();
+            carregarHistoricoLembretes();
+
+            console.log(`Lembrete ${lembreteId} excluído`);
+        }
+    } catch (error) {
+        console.error('Erro ao excluir lembrete:', error);
+        alert('Erro ao excluir lembrete.');
+    }
+}
+
+// Função para verificar lembretes pendentes (copiada do main.js)
+function verificarLembretesPendentes() {
+    try {
+        const lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+        const hoje = new Date();
+        const hojeFormatada = hoje.toISOString().split('T')[0]; // YYYY-MM-DD
+
+        const lembretesPendentes = lembretes.filter(lembrete => {
+            // Verificar se é para hoje ou amanhã e ainda não foi enviado
+            const dataLembrete = new Date(lembrete.data);
+            const amanha = new Date(hoje);
+            amanha.setDate(amanha.getDate() + 1);
+
+            return (lembrete.data === hojeFormatada || lembrete.data === amanha.toISOString().split('T')[0])
+                && lembrete.status === 'pendente';
+        });
+
+        return lembretesPendentes;
+    } catch (error) {
+        console.error('Erro ao verificar lembretes:', error);
+        return [];
+    }
+}
+
+// Função para mostrar painel de lembretes (copiada do main.js)
+function mostrarPainelLembretes() {
+    const lembretesPendentes = verificarLembretesPendentes();
+
+    if (lembretesPendentes.length === 0) {
+        alert('Não há lembretes pendentes para hoje ou amanhã.');
+        return;
+    }
+
+    // Criar ou atualizar painel de lembretes
+    let painelLembretes = document.getElementById('painel-lembretes');
+    if (!painelLembretes) {
+        painelLembretes = document.createElement('div');
+        painelLembretes.id = 'painel-lembretes';
+        painelLembretes.className = 'painel-lembretes';
+        document.body.appendChild(painelLembretes);
+    }
+
+    painelLembretes.innerHTML = `
+        <div class="lembretes-header">
+            <h3>📅 Lembretes de Agendamentos</h3>
+            <button class="btn-fechar-lembretes" onclick="fecharPainelLembretes()">×</button>
+        </div>
+        <div class="lembretes-content">
+            ${lembretesPendentes.map(lembrete => `
+                <div class="lembrete-item">
+                    <div class="lembrete-info">
+                        <strong>${lembrete.nome}</strong>
+                        <p>📅 ${lembrete.dataFormatada} às ${lembrete.hora}</p>
+                        <p>💅 ${lembrete.servico}</p>
+                        <p>📱 ${lembrete.telefone}</p>
+                    </div>
+                    <div class="lembrete-acoes">
+                        <button class="btn-enviar-lembrete" onclick="reenviarLembrete(${lembrete.id})">
+                            📱 ${lembrete.status === 'pendente' ? 'Enviar Lembrete' : 'Reenviar Lembrete'}
+                        </button>
+                        ${lembrete.status === 'pendente' ? `
+                            <button class="btn-cancelar-lembrete" onclick="cancelarLembrete(${lembrete.id})">
+                                ❌ Cancelar
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        <div class="lembretes-footer">
+            <button class="btn-enviar-todos" onclick="enviarTodosLembretes()">
+                📱 Enviar Todos os Lembretes
+            </button>
+        </div>
+    `;
+
+    painelLembretes.style.display = 'block';
+}
+
+// Função para fechar painel de lembretes (copiada do main.js)
+function fecharPainelLembretes() {
+    const painelLembretes = document.getElementById('painel-lembretes');
+    if (painelLembretes) {
+        painelLembretes.style.display = 'none';
+    }
+}
+
+// Função para enviar lembrete individual (mantida para compatibilidade)
+function enviarLembreteIndividual(lembreteId) {
+    // Redireciona para a nova função de reenvio
+    reenviarLembrete(lembreteId);
+}
+
+// Função para mostrar feedback visual do envio
+function mostrarFeedbackEnvio(nomeCliente, sucesso, acao = 'enviado') {
+    const feedback = document.createElement('div');
+    feedback.className = `feedback-envio ${sucesso ? 'sucesso' : 'erro'}`;
+    feedback.innerHTML = `
+        <div class="feedback-content">
+            <i class="fas ${sucesso ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span>${sucesso ? `Lembrete ${acao} com sucesso!` : 'Erro ao enviar lembrete'} para ${nomeCliente}</span>
+        </div>
+    `;
+
+    document.body.appendChild(feedback);
+
+    // Remover feedback após 3 segundos
+    setTimeout(() => {
+        if (feedback.parentNode) {
+            feedback.remove();
+        }
+    }, 3000);
+}
+
+// Função para cancelar lembrete (copiada do main.js)
+function cancelarLembrete(lembreteId) {
+    try {
+        let lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+
+        const lembreteIndex = lembretes.findIndex(l => l.id === lembreteId);
+        if (lembreteIndex !== -1) {
+            lembretes[lembreteIndex].status = 'cancelado';
+            lembretes[lembreteIndex].dataCancelamento = new Date().toISOString();
+            localStorage.setItem('lembretes_agendamentos', JSON.stringify(lembretes));
+
+            // Atualizar interface
+            carregarEstatisticasLembretes();
+            carregarHistoricoLembretes();
+            mostrarPainelLembretes();
+        }
+    } catch (error) {
+        console.error('Erro ao cancelar lembrete:', error);
+    }
+}
+
+// Função para enviar todos os lembretes (copiada do main.js)
+function enviarTodosLembretes() {
+    const lembretesPendentes = verificarLembretesPendentes();
+
+    if (lembretesPendentes.length === 0) {
+        alert('Não há lembretes pendentes para enviar.');
+        return;
+    }
+
+    if (confirm(`Deseja enviar ${lembretesPendentes.length} lembrete(s) via WhatsApp?\n\nOs lembretes serão enviados diretamente para o WhatsApp de cada cliente.`)) {
+        let enviadosComSucesso = 0;
+        let erros = 0;
+
+        lembretesPendentes.forEach((lembrete, index) => {
+            const url = enviarLembreteWhatsApp(lembrete);
+
+            if (url) {
+                // Abrir em nova aba com delay para evitar bloqueio
+                setTimeout(() => {
+                    window.open(url, '_blank');
+                    enviadosComSucesso++;
+                }, index * 1000); // Delay progressivo para cada lembrete
+            } else {
+                erros++;
+                console.error(`Erro ao gerar URL para ${lembrete.nome}: ${lembrete.telefone}`);
+            }
+        });
+
+        setTimeout(() => {
+            carregarEstatisticasLembretes();
+            carregarHistoricoLembretes();
+            mostrarPainelLembretes();
+
+            // Mostrar resumo do envio
+            if (erros > 0) {
+                alert(`Envio concluído!\n\n✅ ${enviadosComSucesso} lembrete(s) enviado(s) com sucesso\n❌ ${erros} erro(s) encontrado(s)`);
+            } else {
+                alert(`✅ Todos os ${enviadosComSucesso} lembrete(s) foram enviados com sucesso!`);
+            }
+        }, (lembretesPendentes.length + 2) * 1000);
+    }
+}
+
+// Função para enviar lembrete via WhatsApp (copiada do main.js)
+function enviarLembreteWhatsApp(lembrete) {
+    const nome = lembrete.nome;
+    const telefone = lembrete.telefone;
+    const data = lembrete.dataFormatada;
+    const hora = lembrete.hora;
+    const servico = lembrete.servico;
+
+    // Função para obter o número da cliente do lembrete
+    function getNumeroCliente(lembrete) {
+        if (!lembrete.telefone) return '';
+
+        // Remove todos os caracteres não numéricos
+        let numero = lembrete.telefone.replace(/\D/g, '');
+
+        // Se o número tem 11 dígitos e começa com 0, remove o 0
+        if (numero.length === 11 && numero.startsWith('0')) {
+            numero = numero.substring(1);
+        }
+
+        // Se o número tem 10 dígitos, adiciona o código do país (55 para Brasil)
+        if (numero.length === 10) {
+            numero = '55' + numero;
+        }
+
+        // Se o número tem 11 dígitos e não começa com 55, adiciona o código do país
+        if (numero.length === 11 && !numero.startsWith('55')) {
+            numero = '55' + numero;
+        }
+
+        return numero;
+    }
+
+    const numeroCliente = getNumeroCliente(lembrete);
+
+    // Verificar se o número é válido (deve ter pelo menos 12 dígitos com código do país)
+    if (!numeroCliente || numeroCliente.length < 12) {
+        console.error('Número de telefone inválido:', telefone, 'Número processado:', numeroCliente);
+        alert(`Número de telefone inválido para envio do lembrete: ${telefone}`);
+        return null;
+    }
+
+    const mensagem = `Olá ${nome}! 😊%0A%0A` +
+        `*LEMBRETE DE AGENDAMENTO* 📅%0A%0A` +
+        `Você tem um horário marcado:%0A` +
+        `📅 *Data:* ${data}%0A` +
+        `⏰ *Horário:* ${hora}%0A` +
+        `💅 *Serviço:* ${servico}%0A%0A` +
+        `Por favor, confirme se poderá comparecer.%0A` +
+        `Em caso de cancelamento, entre em contato com antecedência.%0A%0A` +
+        `Aguardo você! 💕%0A` +
+        `Ana Livia - Livía Nail Art`;
+
+    const url = `https://wa.me/${numeroCliente}?text=${mensagem}`;
+
+    // Não marcar como enviado automaticamente - permite reenvios
+    // marcarLembreteComoEnviado(lembrete.id);
+
+    return url;
+}
+
+// Função para marcar lembrete como enviado (copiada do main.js)
+function marcarLembreteComoEnviado(lembreteId) {
+    try {
+        let lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+
+        const lembreteIndex = lembretes.findIndex(l => l.id === lembreteId);
+        if (lembreteIndex !== -1) {
+            const lembrete = lembretes[lembreteIndex];
+            lembretes[lembreteIndex].status = 'enviado';
+            lembretes[lembreteIndex].dataEnvio = new Date().toISOString();
+            localStorage.setItem('lembretes_agendamentos', JSON.stringify(lembretes));
+
+            console.log(`Lembrete ${lembreteId} marcado como enviado`);
+
+            // Mostrar feedback visual
+            mostrarFeedbackEnvio(lembrete.nome, true, 'marcado como enviado');
+
+            // Atualizar interface
+            setTimeout(() => {
+                carregarEstatisticasLembretes();
+                carregarHistoricoLembretes();
+                if (document.getElementById('painel-lembretes') &&
+                    document.getElementById('painel-lembretes').style.display !== 'none') {
+                    mostrarPainelLembretes();
+                }
+            }, 1000);
+        }
+    } catch (error) {
+        console.error('Erro ao marcar lembrete como enviado:', error);
+        alert('Erro ao marcar lembrete como enviado.');
+    }
+}
+
+// Função para marcar lembrete como enviado manualmente
+function marcarLembreteComoEnviadoManual(lembreteId) {
+    try {
+        const lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+        const lembrete = lembretes.find(l => l.id === lembreteId);
+
+        if (lembrete && confirm(`Marcar lembrete para ${lembrete.nome} como enviado?`)) {
+            marcarLembreteComoEnviado(lembreteId);
+        }
+    } catch (error) {
+        console.error('Erro ao marcar lembrete como enviado manualmente:', error);
+        alert('Erro ao marcar lembrete como enviado.');
+    }
+}
+
+// Função para reenviar lembrete (mesmo se já foi enviado)
+function reenviarLembrete(lembreteId) {
+    try {
+        const lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+        const lembrete = lembretes.find(l => l.id === lembreteId);
+
+        if (lembrete) {
+            const url = enviarLembreteWhatsApp(lembrete);
+
+            if (url) {
+                // Mostrar confirmação antes de abrir o WhatsApp
+                const acao = lembrete.status === 'enviado' ? 'reenviar' : 'enviar';
+                if (confirm(`${acao.charAt(0).toUpperCase() + acao.slice(1)} lembrete para ${lembrete.nome} (${lembrete.telefone})?`)) {
+                    window.open(url, '_blank');
+
+                    // Mostrar feedback visual
+                    mostrarFeedbackEnvio(lembrete.nome, true, acao);
+                }
+            } else {
+                mostrarFeedbackEnvio(lembrete.nome, false);
+            }
+
+            // Atualizar interface
+            setTimeout(() => {
+                carregarEstatisticasLembretes();
+                carregarHistoricoLembretes();
+                if (document.getElementById('painel-lembretes') &&
+                    document.getElementById('painel-lembretes').style.display !== 'none') {
+                    mostrarPainelLembretes();
+                }
+            }, 1000);
+        }
+    } catch (error) {
+        console.error('Erro ao reenviar lembrete:', error);
+        alert('Erro ao reenviar lembrete. Tente novamente.');
+    }
+}
+
+// Função para voltar lembrete para pendente
+function voltarLembreteParaPendente(lembreteId) {
+    try {
+        let lembretes = JSON.parse(localStorage.getItem('lembretes_agendamentos')) || [];
+        const lembrete = lembretes.find(l => l.id === lembreteId);
+
+        if (lembrete && confirm(`Voltar lembrete para ${lembrete.nome} para pendente?`)) {
+            const lembreteIndex = lembretes.findIndex(l => l.id === lembreteId);
+            if (lembreteIndex !== -1) {
+                lembretes[lembreteIndex].status = 'pendente';
+                lembretes[lembreteIndex].dataEnvio = null;
+                localStorage.setItem('lembretes_agendamentos', JSON.stringify(lembretes));
+
+                console.log(`Lembrete ${lembreteId} voltou para pendente`);
+
+                // Mostrar feedback visual
+                mostrarFeedbackEnvio(lembrete.nome, true, 'voltou para pendente');
+
+                // Atualizar interface
+                setTimeout(() => {
+                    carregarEstatisticasLembretes();
+                    carregarHistoricoLembretes();
+                    if (document.getElementById('painel-lembretes') &&
+                        document.getElementById('painel-lembretes').style.display !== 'none') {
+                        mostrarPainelLembretes();
+                    }
+                }, 1000);
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao voltar lembrete para pendente:', error);
+        alert('Erro ao voltar lembrete para pendente.');
     }
 }

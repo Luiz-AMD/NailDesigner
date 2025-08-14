@@ -76,6 +76,7 @@
             <!-- Tabs Navigation -->
             <div class="admin-tabs">
                 <button class="tab-btn active" data-tab="calendario">Calendário</button>
+                <button class="tab-btn" data-tab="lembretes">Lembretes</button>
                 <button class="tab-btn" data-tab="configuracoes">Configurações</button>
             </div>
 
@@ -118,6 +119,51 @@
                     <div id="mensagem-calendario" class="mensagem-calendario">
                         <i class="fas fa-calendar-alt"></i>
                         <p>Clique em um dia no calendário para ver os agendamentos</p>
+                    </div>
+                </div>
+
+                <!-- Lembretes Tab -->
+                <div id="lembretes" class="tab-pane">
+                    <div class="lembretes-admin-header">
+                        <h2>📅 Gerenciar Lembretes de Agendamentos</h2>
+                        <p>Envie lembretes para clientes com agendamentos marcados</p>
+                    </div>
+
+                    <div class="lembretes-admin-stats">
+                        <div class="stat-card-lembretes">
+                            <h3>Lembretes Pendentes</h3>
+                            <p id="lembretes-pendentes">0</p>
+                        </div>
+                        <div class="stat-card-lembretes">
+                            <h3>Lembretes Enviados</h3>
+                            <p id="lembretes-enviados">0</p>
+                        </div>
+                        <div class="stat-card-lembretes">
+                            <h3>Total de Lembretes</h3>
+                            <p id="total-lembretes">0</p>
+                        </div>
+                    </div>
+
+                    <div class="lembretes-admin-actions">
+                        <button id="btn-ver-lembretes-admin" class="btn-ver-lembretes-admin"
+                            onclick="mostrarPainelLembretes()">
+                            📱 Ver Lembretes Pendentes
+                        </button>
+                        <button id="btn-enviar-todos-lembretes" class="btn-enviar-todos-lembretes"
+                            onclick="enviarTodosLembretes()">
+                            📱 Enviar Todos os Lembretes
+                        </button>
+                        <button id="btn-limpar-lembretes" class="btn-limpar-lembretes"
+                            onclick="limparLembretesAntigos()">
+                            🗑️ Limpar Lembretes Antigos
+                        </button>
+                    </div>
+
+                    <div class="lembretes-admin-content">
+                        <h3>Histórico de Lembretes</h3>
+                        <div id="lista-lembretes-admin" class="lista-lembretes-admin">
+                            <!-- Lista de lembretes será carregada aqui -->
+                        </div>
                     </div>
                 </div>
 
@@ -282,7 +328,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 Livía Nail Art. Todos os direitos reservados.</p>
+            <p>&copy; 2025 Livía Nail Art. Todos os direitos reservados.</p>
         </div>
     </footer>
 

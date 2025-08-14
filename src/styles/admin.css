@@ -1190,3 +1190,383 @@
         font-size: 0.9rem;
     }
 }
+
+/* ===================== ESTILOS PARA LEMBRETES NO ADMIN ===================== */
+
+/* Header da seção de lembretes */
+.lembretes-admin-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 15px;
+}
+
+.lembretes-admin-header h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.8rem;
+}
+
+.lembretes-admin-header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 1rem;
+}
+
+/* Estatísticas de lembretes */
+.lembretes-admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card-lembretes {
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card-lembretes:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card-lembretes h3 {
+    color: var(--primary-color);
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.stat-card-lembretes p {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+/* Ações de lembretes */
+.lembretes-admin-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-ver-lembretes-admin,
+.btn-enviar-todos-lembretes,
+.btn-limpar-lembretes {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 180px;
+}
+
+.btn-ver-lembretes-admin {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.btn-enviar-todos-lembretes {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+
+.btn-limpar-lembretes {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+}
+
+.btn-ver-lembretes-admin:hover,
+.btn-enviar-todos-lembretes:hover,
+.btn-limpar-lembretes:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Conteúdo de lembretes */
+.lembretes-admin-content {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.lembretes-admin-content h3 {
+    color: var(--primary-color);
+    margin: 0 0 1.5rem 0;
+    font-size: 1.3rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Lista de lembretes */
+.lista-lembretes-admin {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.lembrete-item-admin {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lembrete-item-admin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.lembrete-item-admin.status-pendente {
+    border-left: 4px solid #ffc107;
+}
+
+.lembrete-item-admin.status-enviado {
+    border-left: 4px solid #28a745;
+}
+
+.lembrete-item-admin.status-cancelado {
+    border-left: 4px solid #dc3545;
+}
+
+.lembrete-info-admin {
+    margin-bottom: 1rem;
+}
+
+.lembrete-header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.lembrete-header-admin strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.lembrete-status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.lembrete-status.status-pendente {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.lembrete-status.status-enviado {
+    background: #d4edda;
+    color: #155724;
+}
+
+.lembrete-status.status-cancelado {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.lembrete-details-admin p {
+    margin: 0.3rem 0;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.lembrete-details-admin i {
+    width: 16px;
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.lembrete-acoes-admin {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-enviar-lembrete-admin,
+.btn-cancelar-lembrete-admin,
+.btn-excluir-lembrete-admin {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 100px;
+}
+
+.btn-enviar-lembrete-admin {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+
+.btn-cancelar-lembrete-admin {
+    background: linear-gradient(135deg, #ffc107, #ffca2c);
+    color: #212529;
+}
+
+.btn-excluir-lembrete-admin {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+}
+
+.btn-marcar-enviado-admin {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 100px;
+    background: linear-gradient(135deg, #17a2b8, #138496);
+    color: white;
+}
+
+.btn-voltar-pendente-admin {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 100px;
+    background: linear-gradient(135deg, #6f42c1, #5a32a3);
+    color: white;
+}
+
+.btn-enviar-lembrete-admin:hover,
+.btn-cancelar-lembrete-admin:hover,
+.btn-excluir-lembrete-admin:hover,
+.btn-marcar-enviado-admin:hover,
+.btn-voltar-pendente-admin:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estado sem lembretes */
+.sem-lembretes {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.sem-lembretes i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.sem-lembretes p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Responsividade para lembretes */
+@media (max-width: 768px) {
+    .lembretes-admin-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .lembretes-admin-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-ver-lembretes-admin,
+    .btn-enviar-todos-lembretes,
+    .btn-limpar-lembretes {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .lembrete-header-admin {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .lembrete-acoes-admin {
+        flex-direction: column;
+    }
+
+    .btn-enviar-lembrete-admin,
+    .btn-cancelar-lembrete-admin,
+    .btn-excluir-lembrete-admin {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* ===================== FEEDBACK DE ENVIO ===================== */
+.feedback-envio {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    z-index: 10002;
+    max-width: 400px;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.feedback-envio.sucesso {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border-left: 4px solid #155724;
+}
+
+.feedback-envio.erro {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+    border-left: 4px solid #721c24;
+}
+
+.feedback-content {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.feedback-content i {
+    font-size: 1.2rem;
+}
+
+.feedback-content span {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Responsividade para feedback */
+@media (max-width: 768px) {
+    .feedback-envio {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .feedback-content {
+        text-align: center;
+        justify-content: center;
+    }
+}
