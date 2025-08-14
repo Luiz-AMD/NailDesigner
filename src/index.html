@@ -33,8 +33,6 @@
             </label>
             <ul class="header-menu" id="header-menu">
                 <li class="header_li"><a href="#servicos" aria-label="Ir para Serviços">Serviços</a></li>
-                <li class="header_li"><a href="#galeria" aria-label="Ir para Galeria">Galeria</a></li>
-                <li class="header_li"><a href="#inspiracao" aria-label="Ir para Inspirações">Inspirações</a></li>
                 <li class="header_li"><a href="#contato" aria-label="Ir para Contato">Contato</a></li>
                 <li class="header_li"><a href="login.html" aria-label="Área do Proprietário">Admin</a>
                 </li>
@@ -58,7 +56,7 @@
                 src="https://www.coloramaesmaltes.com.br/-/media/Project/Loreal/Brand-Sites/Essie/MASTER/DMI/articles/tips_trends/2024/nail-designer/designer-esmalte.jpg?la=en&hash=B32B40E6273F316219E4843DE068DACDAFD9639E"
                 alt="Unhas em gel decoradas, exemplo de trabalho realizado" onclick="trocaImg()">
         </section>
-        <div class=" main-services-container">
+        <section id="servicos" class=" main-services-container">
             <div class=" maxWidth">
                 <h2 class="main-services-title">Nossos Serviços</h2>
                 <p class="main-services-text">
@@ -69,7 +67,7 @@
                 <div class="services-container">
                     <div class="service-item service-itemAlinhado">
                         <h3 class="service-item-title">Molde F1</h3>
-                        <img src="https://mixdajo.fbitsstatic.net/img/p/kit-completo-alongamento-no-molde-f1-brilia-nails-144107/332008-3.jpg?w=530&h=530&v=no-value"
+                        <img src="https://http2.mlstatic.com/D_NQ_NP_939320-MLB49733515014_042022-O-molde-f1-formato-europeu-polygel-5-presilhas.webp"
                             alt="Unha feita com molde F1" class="service-item-img">
                     </div>
                     <div class="service-item">
@@ -95,52 +93,15 @@
                     </div>
                 </div>
             </div>
-        </div>
+
         </section>
         <!-- agendamento-------------------------------------------- -->
 
         <section id="agendamento" class="main-agendamento">
             <h2 class="titulo-agendamento">Agendamento Online</h2>
-            <p>Escolha o melhor dia e horário para seu atendimento. Preencha os dados abaixo para agendar
-                automaticamente:
+            <p>Escolha um dia e confira os horários disponíveis.
             </p>
             <div class="agdContainer">
-                <form id="form-agendamento" class="form-agendamento">
-                    <label for="nome-agendamento">Nome:</label>
-                    <input type="text" id="nome-agendamento" name="nome" required>
-
-                    <label for="telefone-agendamento">Telefone/WhatsApp:</label>
-                    <input type="tel" id="telefone-agendamento" name="telefone" required pattern="[0-9]{10,13}">
-
-                    <input type="hidden" id="data-agendamento" name="data" required>
-                    <label for="data-agendamento">Data selecionada: <span id="data-selecionada-texto">Nenhuma data
-                            selecionada</span></label>
-
-                    <label for="hora-agendamento">Horário:</label>
-                    <select id="hora-agendamento" name="hora" required>
-                        <option value="">Selecione uma data primeiro</option>
-                    </select>
-                    <div id="horarios-disponiveis-container"
-                        style="display: none; margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
-                        <h4 style="margin: 0 0 10px 0; color: #E3BC9A;">Horários Disponíveis</h4>
-                        <div id="horarios-disponiveis-lista" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
-                        <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;">
-                            <strong>Total:</strong> <span id="total-horarios">0</span> horários disponíveis
-                        </p>
-                    </div>
-
-                    <label for="servico-agendamento">Serviço:</label>
-                    <select id="servico-agendamento" name="servico" required>
-                        <option value="">Selecione</option>
-                        <option value="Fibra de vidro">Fibra de vidro</option>
-                        <option value="Molde F1">Molde F1</option>
-                        <option value="Banho em gel">Banho em gel</option>
-                        <option value="Manutenção">Manutenção</option>
-                        <option value="Manutenção">esmaltação em gel</option>
-                    </select>
-
-                    <button type="submit">Agendar</button>
-                </form>
                 <div id="calendario-agendamentos" class="calendario-agendamentos">
                     <h3>Calendário de Agendamentos</h3>
                     <div class="calendario-container">
@@ -160,8 +121,54 @@
                         </div>
                         <div id="dias-calendario" class="dias-calendario"></div>
                     </div>
-
                 </div>
+                <form id="form-agendamento" class="form-agendamento">
+                    <label for="nome-agendamento">Nome:</label>
+                    <input type="text" id="nome-agendamento" name="nome" required aria-required="true"
+                        placeholder="Digite seu nome completo">
+
+                    <label for="telefone-agendamento">Telefone/WhatsApp:</label>
+                    <input type="tel" id="telefone-agendamento" name="telefone" required pattern="[0-9]{10,13}"
+                        aria-required="true" placeholder="(00) 00000-0000">
+
+                    <input type="hidden" id="data-agendamento" name="data" required>
+                    <div class="data-selecionada-container">
+                        <label for="data-selecionada-texto">Data selecionada:</label>
+                        <span id="data-selecionada-texto" role="text" aria-live="polite">Nenhuma data selecionada</span>
+                    </div>
+
+                    <label for="hora-agendamento">Horário:</label>
+                    <select id="hora-agendamento" name="hora" required aria-required="true"
+                        aria-describedby="hora-help">
+                        <option value="">Selecione uma data primeiro</option>
+                    </select>
+
+                    <div id="horarios-disponiveis-container" <h4 style="margin: 0 0 10px 0; color: #E3BC9A;">Horários
+                        Disponíveis</h4>
+                        <div id="horarios-disponiveis-lista" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        </div>
+                        <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;">
+                            <strong>Total:</strong> <span id="total-horarios">0</span> horários disponíveis
+                        </p>
+                    </div>
+
+                    <label for="servico-agendamento">Serviço:</label>
+                    <select id="servico-agendamento" name="servico" required aria-required="true"
+                        aria-describedby="servico-help">
+                        <option value="">Selecione um serviço</option>
+                        <option value="Fibra de vidro">Fibra de vidro</option>
+                        <option value="Molde F1">Molde F1</option>
+                        <option value="Banho em gel">Banho em gel</option>
+                        <option value="Manutenção">Manutenção</option>
+                        <option value="Esmaltação em gel">Esmaltação em gel</option>
+                    </select>
+
+
+                    <button type="submit">Agendar</button>
+                </form>
+
+
+
 
             </div>
             <div class="agendamentos-lista">
@@ -170,6 +177,9 @@
                 <ul id="lista-agendamentos"></ul>
             </div>
 
+
+
+            <p>Caso queria um horario diferente, entre em contato com a atendente.</p>
         </section>
 
 
