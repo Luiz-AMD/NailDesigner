@@ -2,7 +2,7 @@
 
 Sistema completo de agendamento para designer de unhas com interfaces separadas para clientes e proprietário.
 
-## 📋 Funcionalidades
+## Funcionalidades
 
 ### Interface do Cliente (`index.html`)
 - **Visualização de serviços**: Apresentação dos serviços oferecidos
@@ -73,7 +73,7 @@ site-nail-designer/
 └── README.md
 ```
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **HTML5**: Estrutura das páginas
 - **CSS3**: Estilização e responsividade
@@ -82,14 +82,14 @@ site-nail-designer/
 - **WhatsApp API**: Integração para envio de mensagens
 - **Instagram LightWidget**: Galeria de trabalhos
 
-## 📱 Responsividade
+## Responsividade
 
 O sistema é totalmente responsivo e funciona em:
 - Desktop
 - Tablet
 - Smartphone
 
-## 🔧 Configurações
+## Configurações
 
 ### Horários de Funcionamento
 - **Padrão**: 07:30 às 18:00
@@ -103,32 +103,32 @@ O sistema é totalmente responsivo e funciona em:
 - Manutenção
 - Esmaltação em gel
 
-## 📊 Armazenamento de Dados
+## Armazenamento de Dados
 
 Os dados são armazenados localmente no navegador usando: ALTERAR 
 - **Agendamentos**: Lista de todos os agendamentos
 - **Configurações**: Configurações do sistema
 
-## 🔒 Segurança
+## Segurança
 
 - Validação de dados no frontend
 - Verificação de horários disponíveis
 - Prevenção de agendamentos duplicados
 - Confirmação para ações importantes
 
-## 📞 Suporte
+## Suporte
 
 Para suporte ou dúvidas:
 - WhatsApp: (38) 99270-2823
 - Instagram: @livia_nailart__
 
-## 🚀 Instalação
+## Instalação
 
 1. Clone ou baixe o projeto
 2. Abra `src/index.html` no navegador
 3. Para acessar o painel administrativo, clique em "Área Admin" no menu
 
-## 📝 Notas
+## Notas
 
 - O sistema funciona offline
 - Os dados são salvos no navegador do usuário
@@ -137,4 +137,4 @@ Para suporte ou dúvidas:
 
 ---
 
-**Desenvolvido para Livía Nail Art** 💅
+**Desenvolvido para Livía Nail Art** 
