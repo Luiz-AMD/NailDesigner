@@ -35,7 +35,7 @@ Sistema completo de agendamento para designer de unhas com interfaces separadas 
   - Configuração de serviços e preços
   - Configurações de notificação
 
-## 🚀 Como Usar
+## Como Usar
 
 ### Para Clientes
 1. Acesse `index.html` no navegador
@@ -92,8 +92,8 @@ O sistema é totalmente responsivo e funciona em:
 ## 🔧 Configurações
 
 ### Horários de Funcionamento
-- **Padrão**: 08:00 às 17:00
-- **Almoço**: 12:00 às 13:00
+- **Padrão**: 07:30 às 18:00
+- **Almoço**: 12:00 às 13:30
 - **Dias úteis**: Segunda a sexta-feira
 
 ### Serviços Disponíveis
@@ -105,7 +105,7 @@ O sistema é totalmente responsivo e funciona em:
 
 ## 📊 Armazenamento de Dados
 
-Os dados são armazenados localmente no navegador usando:
+Os dados são armazenados localmente no navegador usando: ALTERAR 
 - **Agendamentos**: Lista de todos os agendamentos
 - **Configurações**: Configurações do sistema
 
