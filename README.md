@@ -54,7 +54,7 @@ Sistema completo de agendamento para designer de unhas com interfaces separadas 
 4. Visualize o calendário na aba "Calendário"
 5. Configure o sistema na aba "Configurações"
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 site-nail-designer/
