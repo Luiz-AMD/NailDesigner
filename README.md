@@ -116,12 +116,6 @@ Os dados são armazenados localmente no navegador usando: ALTERAR
 - Prevenção de agendamentos duplicados
 - Confirmação para ações importantes
 
-## Suporte
-
-Para suporte ou dúvidas:
-- WhatsApp: (38) 99270-2823
-- Instagram: @livia_nailart__
-
 ## Instalação
 
 1. Clone ou baixe o projeto
